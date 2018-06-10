@@ -1,0 +1,5 @@
+version: '3.0'
+
+services:
+  db:
+    image: treehouses/rpi-couchdb:2.0.0

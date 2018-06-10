@@ -1,0 +1,256 @@
+# This file contain an example of cozy-stack configuration file.
+# It provides a description for all available fields to configure the stack.
+#
+# It is possible to pass environnment variable to this configuration using the
+# template language of golang, delimited by "{{" and "}}". See:
+#
+#     https://golang.org/pkg/text/template/.
+#
+# The env map is available in the ".Env" variable. For instance
+# ".Env.COUCHDB_PASSPHRASE" will access to "COUCHDB_PASSPHRASE" environment
+# variable. The template is evaluated at startup of the stack.
+
+# server host - flags: --host
+host: 0.0.0.0
+# server port - flags: --port -p
+port: 8080
+
+# how to structure the subdomains for apps - flags: --subdomains
+# values:
+#  - nested, like https://<app>.<user>.<domain>/ (well suited for self-hosted with Let's Encrypt)
+#  - flat, like https://<user>-<app>.<domain>/ (easier when using wildcard TLS certificate)
+subdomains: nested
+
+# defines a list of assets that can be fetched via the /remote/:asset-name
+# route.
+remote_assets:
+  bank: https://myassetserver.com/remote_asset.json
+
+# path to the directory with the assets - flags: --assets
+# default is to use the assets packed in the binary
+# assets: ""
+
+# administration endpoint parameters. this endpoint should be protected
+admin:
+  # server host - flags: --admin-host
+  host: 0.0.0.0
+  # server port - flags: --admin-port
+  port: 6060
+  # secret file name containing the derived passphrase to access to the
+  # administration endpoint. this secret file can be generated using the `cozy-
+  # stack config passwd` command. this file should be located in the same path
+  # as the configuration file.
+  secret_filename: cozy-admin-passphrase
+
+# vault contains keyfiles informations
+# See https://cozy.github.io/cozy-stack/cli/cozy-stack_config_gen-keys.html
+# to generate the keys
+#vault:
+  # the path to the key used to encrypt credentials
+#  credentials_encryptor_key: /usr/local/cozy-stack/credentials/key.enc
+  # the path to the key used to decrypt credentials
+#  credentials_decryptor_key: /usr/local/cozy-stack/credentials/key.dec
+
+# file system parameters
+fs:
+  # file system url - flags: --fs-url
+  # default url is the directory relative to the binary: ./storage
+
+  # url: file://localhost/var/lib/cozy
+  # url: swift://openstack/?UserName={{ .Env.OS_USERNAME }}&Password={{ .Env.OS_PASSWORD }}&ProjectName={{ .Env.OS_PROJECT_NAME }}&UserDomainName={{ .Env.OS_USER_DOMAIN_NAME }}
+
+# couchdb parameters
+couchdb:
+  # CouchDB URL - flags: --couchdb-url
+  url: http://db:5984/
+
+# jobs parameters to configure the job system
+jobs:
+  # path to the imagemagick convert binary
+  # imagemagick_convert_cmd: convert
+
+  # workers individual configrations.
+  #
+  # For each worker type it is possible to configure the following fields:
+  #   - concurrency: the maximum number of jobs executed in parallel. when set
+  #     to zero, the worker is deactivated
+  #   - max_exec_count: the maximum number of retries for one job in case of an
+  #     error
+  #   - timeout: the maximum amount of time allowed for one execution of a job
+  #
+  # List of available workers:
+  #
+  #   - "konnector":      launching konnectors
+  #   - "push":           sending push notifications
+  #   - "sendmail":       sending mails
+  #   - "service":        launching services
+  #   - "thumbnail":      creatings and deleting thumbnails for images
+  #   - "unzip":          unzipping tarball
+  #
+  # When no configuration is given for a worker, a default configuration is
+  # used. When a false boolean value is given, the worker is deactivated.
+  #
+  # To deactivate all workers, the workers field can be set to "false" or
+  # "none".
+  workers:
+    # thumbnail:
+    #   concurrency: {{mul .NumCPU 4}}
+    #   max_exec_count: 2
+    #   timeout: 15s
+
+    # konnector:
+    #   concurrency: {{.NumCPU}}
+    #   max_exec_count: 2
+    #   timeout: 200s
+
+    # service:
+    #   concurrency: {{.NumCPU}}
+    #   max_exec_count: 2
+    #   timeout: 200s
+
+    # export:
+    #   concurrency: 4
+    #   max_exec_count: 1
+    #   timeout: 200s
+
+    # push:     false
+    # sendmail: false
+
+# konnectors execution parameters for executing external processes.
+konnectors:
+  cmd: ./scripts/konnector-node-run.sh # run connectors with node
+  # cmd: ./scripts/konnector-rkt-run.sh # run connectors with rkt
+  # cmd: ./scripts/konnector-nsjail-run.sh # run connectors with nsjail
+
+# mail service parameters for sending email via SMTP
+mail:
+  # mail noreply address - flags: --mail-noreply-address
+  noreply_address: noreply@localhost
+  noreply_name: My Cozy
+  # mail smtp host - flags: --mail-host
+  host: smtp.home
+  # mail smtp port - flags: --mail-port
+  port: 465
+  # mail smtp username - flags: --mail-username
+  username: {{.Env.COZY_MAIL_USER}}
+  # mail smtp password - flags: --mail-password
+  password: {{.Env.COZY_MAIL_PASSWORD}}
+  # disable mail tls - flags: --mail-disable-tls
+  disable_tls: false
+  # skip the certificate validation (may be useful on localhost)
+  skip_certificate_validation: false
+
+# directory with the hooks scripts - flags: --hooks
+hooks: ./scripts/hooks
+
+# location of the database for IP -> City lookups - flags: --geodb
+# See https://dev.maxmind.com/geoip/geoip2/geolite2/
+geodb: ""
+
+# minimal duration between two password reset
+password_reset_interval: 15m
+
+# redis namespace to configure its usage for different part of the stack. redis
+# is not mandatory and is specifically useful to run the stack in an
+# environment where multiple stacks run simultaneously.
+redis:
+  # the redis clients created can be configured to be used with a cluster of
+  # redis. if addrs field is left empty, redis is not used.
+
+  # either a single address or a seed list of host:port addresses
+  # of cluster/sentinel nodes separated by whitespaces.
+  addrs: # localhost:1234 localhost:4321
+
+  # the sentinel master name - only failover clients.
+  master:
+
+  # redis password
+  password:
+
+  # databases number for each part of the stack using a specific database.
+  databases:
+    jobs: 0
+    cache: 1
+    lock: 2
+    sessions: 3
+    downloads: 4
+    konnectors: 5
+    realtime: 6
+    log: 7
+
+  # advanced parameters for advanced users
+
+  # dial_timeout: 5s
+  # read_timeout: 3s
+  # write_timeout: 3s
+  # pool_size: 10 * runtime.NumCPU()
+  # pool_timeout: 3s
+  # idle_timeout: 5m
+  # idle_check_frequency: 1m
+
+  # enables read only queries on slave nodes.
+  # read_only_slave: false
+
+# Auto updates scheduler
+auto_updates:
+  schedule: "@cron 0 0 0 * * *"
+
+# Registries used for applications and konnectors
+registries:
+  - https://apps-registry.cozy.io/
+
+notifications:
+  # Activate development APIs (iOS only)
+  development: false
+
+  # Firebase Cloud Messaging API Key for Android notifications
+  # android_api_key: ""
+
+  # APNS/2 certificates for iOS notifications
+  # ios_certificate_key_path: path/to/certificate.p12
+  # ios_certificate_password: mycertificatepasswordifany
+  # ios_key_id: my_key_id_if_any
+  # ios_team_id: my_team_id_if_any
+
+# whitelisted domains for the CSP policy used in hosted web applications
+csp_whitelist:
+  # script: https://whitelisted1.domain.com/ https://whitelisted2.domain.com/
+  # img:    https://whitelisted.domain.com/
+  # style:  https://whitelisted.domain.com/
+  # font:   https://whitelisted.domain.com/
+
+log:
+  # logger level (debug, info, warning, panic, fatal) - flags: --log-level
+  level: info
+  # send logs to the local syslog - flags: --log-syslog
+  syslog: false
+
+# It is possible to customize some behaviors of cozy-stack in function of the
+# context of an instance (the context field of the settings document of this
+# instance). Here, the "beta" context is customized with.
+contexts:
+  beta:
+    # Indicates if debug related features should be enabled in front
+    # applications.
+    debug: false
+    # Redirect to a specific route of cozy-collect after the onboarding
+    onboarded_redirection: collect/#/discovery/?intro
+    # Redirect to the photos application after login
+    default_redirection: drive/#/files
+    # Allow to customize the cozy-bar link to the help
+    help_link: https://forum.cozy.io/
+    # Coming soon applications listed in the Cozy Bar's app panel
+    # Will be removed when the store will be available.
+    coming_soon:
+      store:
+        editor: 'Cozy'
+        name: 'Store'
+        slug: 'store'
+        category: 'cozy'
+    # claudy actions list
+    claudy_actions:
+        - desktop
+        - mobile
+    # konnectors slugs to exclude from cozy-collect
+    exclude_konnectors:
+        - a_konnector_slug
