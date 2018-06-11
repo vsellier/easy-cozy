@@ -99,4 +99,4 @@ We will now create a personal instance `myuser.cozy.mydomain.tld` :
 
 Open in a browser the url displayed at the end of the script output to finalize the instance configuration.
 
-:+1: Congratulation you have your own cozy cloud.
+:+1: Congratulations you have now your own cozy cloud.
