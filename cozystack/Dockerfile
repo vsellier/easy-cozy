@@ -12,7 +12,7 @@ RUN /install.sh
 
 FROM debian:stable-slim
 
-RUN apt-get update && apt-get -y install git && rm -rf /var/cache/apt
+RUN apt-get update && apt-get -y install git imagemagick && rm -rf /var/cache/apt
 RUN groupadd --gid 1000 cozy && useradd --gid 1000 --uid 1000 -m -d /usr/local/cozy-stack cozy && mkdir /etc/cozy && chown cozy:cozy /etc/cozy
 
 # Docker cloud still not support --chown option, even the edge version
