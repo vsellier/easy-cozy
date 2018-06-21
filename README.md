@@ -11,8 +11,9 @@ What is included :
 
 What is (not yet) included :
 
-- Email configuration
-- Backups management
+[ ] Konnector management
+[ ] Email configuration
+[ ] Backups management
 
 ## Prequisite
 
