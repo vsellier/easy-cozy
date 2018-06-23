@@ -101,3 +101,13 @@ We will now create a personal instance `myuser.cozy.mydomain.tld` :
 Open in a browser the url displayed at the end of the script output to finalize the instance configuration.
 
 :+1: Congratulations you have now your own cozy cloud.
+
+## Install applications
+
+[Drive](https://github.com/cozy/cozy-drive) and [Photo](https://github.com/cozy/cozy-photos) are installed by default by the [create-instance.sh](create-instance.sh) script. Other applications like [banks](https://github.com/cozy/cozy-banks) or [contacts](https://github.com/cozy/cozy-contacts) are also available.
+
+To install an application, you can run the [application.sh](application.sh) script :
+
+```
+sudo ./application.sh <instance name> <application>
+```
