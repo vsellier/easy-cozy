@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ $# -ne 1 ]; then
 	echo "Usage: $0 <instance url>"
@@ -10,7 +10,7 @@ source .env
 
 TMPFILE=$(mktemp /tmp/cozyXXX)
 
-echo "Creating instance ${INSTANCE_ID}.${COZY_TLD}..."
+echo "Creating instance ${INSTANCE_ID}.${COZY_TLD} ..."
 
 docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos,collect,settings,onboarding "${INSTANCE_ID}.${COZY_TLD}" | tee "${TMPFILE}"
 
