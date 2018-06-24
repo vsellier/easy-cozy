@@ -196,8 +196,8 @@ auto_updates:
   schedule: "@cron 0 0 0 * * *"
 
 # Registries used for applications and konnectors
-registries:
-  - https://apps-registry.cozy.io/
+# registries:
+#  - https://apps-registry.cozy.io/
 
 notifications:
   # Activate development APIs (iOS only)

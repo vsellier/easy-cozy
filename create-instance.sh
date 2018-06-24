@@ -12,7 +12,7 @@ TMPFILE=$(mktemp /tmp/cozyXXX)
 
 echo "Creating instance ${INSTANCE_ID}.${COZY_TLD} ..."
 
-docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos,collect,settings,onboarding "${INSTANCE_ID}.${COZY_TLD}" | tee "${TMPFILE}"
+docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos,collect,settings,onboarding,store "${INSTANCE_ID}.${COZY_TLD}" | tee "${TMPFILE}"
 
 # TODO find a better way to detect if there was an error
 TOKEN=""
