@@ -17,7 +17,7 @@ docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos
 # TODO find a better way to detect if there was an error
 TOKEN=""
 if [ $(grep -ic ERROR ${TMPFILE}) -eq 0 ]; then
-	TOKEN=$(tail -n1 "${TMPFILE}" | cut -f2 -d":" | tr -d '" ')
+	TOKEN=$(grep token "${TMPFILE}" | cut -f2 -d":" | tr -d '" ')
 fi
 
 rm "${TMPFILE}"
