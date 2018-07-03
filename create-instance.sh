@@ -12,7 +12,10 @@ TMPFILE=$(mktemp /tmp/cozyXXX)
 
 echo "Creating instance ${INSTANCE_ID}.${COZY_TLD} ..."
 
-docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos,collect,settings,onboarding,store "${INSTANCE_ID}.${COZY_TLD}" | tee "${TMPFILE}"
+docker-compose exec cozy ./cozy instances add --host 0.0.0.0 --apps drive,photos,collect,settings,onboarding "${INSTANCE_ID}.${COZY_TLD}" | tee "${TMPFILE}"
+
+## To replace by registry://store/something after next cozy-stack release
+docker-compose exec cozy ./cozy apps install --domain "${INSTANCE_ID}.${COZY_TLD}" git://github.com/cozy/cozy-store.git#build | tee -a "${TMPFILE}"
 
 # TODO find a better way to detect if there was an error
 TOKEN=""
