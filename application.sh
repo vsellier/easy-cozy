@@ -33,14 +33,10 @@ INSTANCE="${INSTANCE_ID}.${COZY_TLD}"
 echo "Installing $APP application on $INSTANCE"
 
 if [ "$APP" == "banks" ]; then
-	BRANCH="latest"
+	APP_URL="git://github.com/cozy/cozy-${APP}.git#build"
 else
-	BRANCH="build"
+	APP_URL="registry://${APP}/stable"
 fi
-
-BASE_URL="git://github.com/cozy/cozy-"
-
-APP_URL="${BASE_URL}${APP}.git#${BRANCH}"
 
 echo "Installing from ${APP_URL}"
 
