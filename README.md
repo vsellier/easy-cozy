@@ -29,7 +29,12 @@ Choose a cozy subdomain for you instance like `cozy.mydomain.tld`. Declare on yo
 
 ## Cozy installation and configuration
 
-- Clone the project
+- Clone the [easy-cozy](https://github.com/vsellier/easy-cozy) project
+
+```
+git clone https://github.com/vsellier/easy-cozy.git
+```
+
 - On the root directory of the project, create a `.env` file. You can use the `env-template` file as reference.
 
 ```
@@ -106,7 +111,7 @@ Open in a browser the url displayed at the end of the script output to finalize 
 
 [Drive](https://github.com/cozy/cozy-drive) and [Photo](https://github.com/cozy/cozy-photos) are installed by default by the [create-instance.sh](create-instance.sh) script. Other applications like [banks](https://github.com/cozy/cozy-banks) or [contacts](https://github.com/cozy/cozy-contacts) are also available.
 
-You can go to the store application (store.yourinstance.youdomain.tld) to manage you applications.
+You can go to the store application (`store.yourinstance.youdomain.tld`) to manage you applications.
 To manually install an application, you can run the [application.sh](application.sh) script :
 
 ```
