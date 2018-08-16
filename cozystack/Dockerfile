@@ -37,7 +37,6 @@ RUN chown cozy:cozy /usr/local/cozy-stack/cozy /usr/local/cozy-stack/scripts/kon
 RUN chmod u+x /entrypoint.sh /usr/local/cozy-stack/scripts/konnector-node-run.sh
 
 # Raspberry hack for node
-RUN if uname -m | grep -Eq "arm"; then ln -s /lib/ld-linux.so.3 /lib/ld-linux-armhf.so.3; fi
 RUN ln -s /usr/local/node/bin/node /usr/bin/node
 
 USER cozy
