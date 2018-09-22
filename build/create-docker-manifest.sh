@@ -47,11 +47,15 @@ fi
 echo "Creating manifest for image ${IMAGE_NAME} composed by ${AMD64_IMAGE_NAME} and ${ARM_IMAGE_NAME}"
 echo "Press enter to continue ..."
 read
-echo "Creation in progress ..."
 
-docker manifest create ${IMAGE_NAME} ${AMD64_IMAGE_NAME} ${ARM_IMAGE_NAME}
+echo "Pull latest images"
+docker pull ${AMD64_IMAGE_NAME}
+docker pull ${ARM_IMAGE_NAME}
+
+echo "Creation in progress ..."
+docker manifest create --amend ${IMAGE_NAME} ${AMD64_IMAGE_NAME} ${ARM_IMAGE_NAME}
 if [ $? -ne 0 ]; then
-	echo "Error create the manifest"
+	echo "Error during manifest creation the manifest"
 	exit 1
 fi
 
