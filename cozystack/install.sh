@@ -17,17 +17,16 @@ fi
 
 echo "Install cozy-stack..."
 
-wget -O /tmp/cozy https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}
-wget -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}.sha256
+wget -O /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}
+wget -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack.sha256
 
-cat <<EOF >/tmp/SHA256
-SHA256(/tmp/cozy)= $(awk '{print $2}' cozy.sha256)
-EOF
+grep linux-${COZY_ARCH} /tmp/cozy.sha256 > /tmp/SHA256
 
 echo "Expected checkum                : $(cat /tmp/SHA256)"
-echo "Checksum of the downloaded file : $(sha256sum --tag /tmp/cozy)"
+echo "Checksum of the downloaded file : $(sha256sum --tag /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION})"
 sha256sum -c /tmp/SHA256
 
+mv /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} /tmp/cozy
 chmod u+x /tmp/cozy
 
 echo "Install nodejs..."
