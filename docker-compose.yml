@@ -34,7 +34,7 @@ services:
     restart: on-failure
   
   front:
-    image: traefik:1.7.9
+    image: traefik:1.7.11
     restart: on-failure
     ports:
       - 80:80
