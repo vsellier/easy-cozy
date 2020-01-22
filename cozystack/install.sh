@@ -31,6 +31,6 @@ chmod u+x /tmp/cozy
 
 echo "Install nodejs..."
 
-wget -O /tmp/node.tar.xz https://nodejs.org/dist/v8.11.3/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
+wget -O /tmp/node.tar.xz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
 tar -xv --use-compress-program xz -f node.tar.xz
 mv node-v${NODE_VERSION}-linux-${NODE_ARCH} node
