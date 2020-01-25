@@ -10,7 +10,7 @@ services:
       options:
         max-size: "1M"
         max-file: "10"
-    restart: on-failure
+    restart: unless-stopped
 
   cozy:
     image: vsellier/easy-cozy:${COZY_STACK_VERSION:-latest}
@@ -19,11 +19,25 @@ services:
       COZY_TLD: ${COZY_TLD}
     volumes:
       - ${STORAGE_DIRECTORY}:/usr/local/cozy-stack/storage
+    expose:
+      - 8080
+      - 6060
     labels:
       - "traefik.enable=true"
-      - "traefik.basic.frontend.rule=HostRegexp:${COZY_TLD},{subdomain:.*}.${COZY_TLD}"
-      - "traefik.port=8080"
-      - "traefik.frontend.entryPoints=http,https"
+      # 80
+      - "traefik.http.routers.easy-cozy-http.entrypoints=web"
+      - "traefik.http.routers.easy-cozy-http.rule=HostRegexp(`${COZY_TLD}`, `{subdomain:.*}.${COZY_TLD}`)"
+      - "traefik.http.routers.easy-cozy-http.middlewares=easy-cozy-http-redirect"
+      # 443
+      - "traefik.http.services.easy-cozy-https.loadbalancer.server.port=8080"
+      - "traefik.http.routers.easy-cozy-https.entrypoints=websecure"
+      - "traefik.http.routers.easy-cozy-https.rule=HostRegexp(`${COZY_TLD}`, `{subdomain:.*}.${COZY_TLD}`)"
+      - "traefik.http.routers.easy-cozy-https.tls=true"
+      - "traefik.http.routers.easy-cozy-https.tls.certresolver=certResolver"
+      # middleware
+      - "traefik.http.middlewares.easy-cozy-http-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.easy-cozy-http-redirect.redirectscheme.permanent=true"
+
     depends_on:
       - db
     logging:
@@ -31,10 +45,10 @@ services:
       options:
         max-size: "1M"
         max-file: "10"
-    restart: on-failure
+    restart: unless-stopped
   
   front:
-    image: traefik:1.7.12
+    image: traefik:2.1.3
     restart: on-failure
     ports:
       - 80:80
@@ -42,7 +56,7 @@ services:
       - 127.0.0.1:8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./config/traefik.toml:/traefik.toml
+      # - ./config/traefik.toml:/traefik.toml
       - ${ACME_DIRECTORY}:/credentials
     logging:
       driver: "json-file"
@@ -50,4 +64,15 @@ services:
         max-size: "1M"
         max-file: "10"
     restart: always
-    command: [ "--acme.email=${EMAIL:-contact@mydomain.tld}"]
+    command: 
+      - --certificatesResolvers.certResolver.acme.email=${EMAIL:-contact@mydomain.tld}
+      - --certificatesResolvers.certResolver.acme.storage=/credentials/acme.json
+      - --certificatesresolvers.certResolver.acme.tlschallenge=true
+      - --providers.docker.exposedByDefault=false
+      - --accesslog=true
+      - --log.level=DEBUG
+      - --providers.docker 
+      - --api.insecure=true 
+      - --entryPoints.web.address=:80 
+      - --entryPoints.websecure.address=:443
+
