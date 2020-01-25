@@ -10,7 +10,7 @@ services:
       options:
         max-size: "1M"
         max-file: "10"
-    restart: on-failure
+    restart: unless-stopped
 
   cozy:
     image: vsellier/easy-cozy:${COZY_STACK_VERSION:-latest}
@@ -31,7 +31,7 @@ services:
       options:
         max-size: "1M"
         max-file: "10"
-    restart: on-failure
+    restart: unless-stopped
   
   front:
     image: traefik:1.7.12
@@ -49,5 +49,5 @@ services:
       options:
         max-size: "1M"
         max-file: "10"
-    restart: always
+    restart: unless-stopped
     command: [ "--acme.email=${EMAIL:-contact@mydomain.tld}"]
