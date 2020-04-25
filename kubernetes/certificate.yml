@@ -1,0 +1,25 @@
+# TODO convert this to a wildcard dns challenge
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: easy-cozy-certificates
+spec:
+  secretName: easy-cozy-crt
+  dnsNames:
+  - my.easy-cozy.domain
+  - drive.my.easy-cozy.domain
+  - banks.my.easy-cozy.domain
+  - blog.my.easy-cozy.domain
+  - collect.my.easy-cozy.domain
+  - contacts.my.easy-cozy.domain
+  - home.my.easy-cozy.domain
+  - notes.my.easy-cozy.domain
+  - oauthcallback.my.easy-cozy.domain
+  - onboarding.my.easy-cozy.domain
+  - passwords.my.easy-cozy.domain
+  - photos.my.easy-cozy.domain
+  - settings.my.easy-cozy.domain
+  - store.my.easy-cozy.domain
+  issuerRef:
+    name: easy-cozy-letsencrypt
+  commonName: eazy-cozy.domain

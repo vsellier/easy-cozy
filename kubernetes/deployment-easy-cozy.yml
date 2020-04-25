@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: easy-cozy-file-volume-claim
+  labels:
+    app: easy-cozy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 150Gi
+  volumeName: "easy-cozy-file-volume"
+  storageClassName: local-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: easy-cozy
+  labels:
+    app: easy-cozy
+spec:
+  selector:
+    matchLabels:
+      app: easy-cozy
+      tier: file
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: easy-cozy
+        tier: file
+    spec:
+      containers:
+      - image: vsellier/easy-cozy:1.4.8_0
+        name: easy-cozy
+        ports:
+        - containerPort: 8080
+          name: easy-cozy-file
+        volumeMounts:
+        - name: file-volume
+          mountPath: /usr/local/cozy-stack/storage
+      volumes:
+      - name: file-volume
+        persistentVolumeClaim:
+          claimName: easy-cozy-file-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: easy-cozy
+  labels:
+    app: easy-cozy
+    tier: file
+spec:
+  selector:
+    app: easy-cozy
+    tier: file
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      name: http
+      port: 8080
+      targetPort: 8080
