@@ -25,7 +25,9 @@ spec:
       app: easy-cozy
       tier: file
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
   template:
     metadata:
       labels:
