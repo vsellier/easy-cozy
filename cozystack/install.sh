@@ -10,6 +10,9 @@ if [[ $ARCH =~ "x86" ]]; then
 elif [[ $ARCH =~ "arm" ]]; then
 	COZY_ARCH=arm
 	NODE_ARCH=armv7l
+elif [[ $ARCH =~ "aarch64" ]]; then
+	COZY_ARCH=arm
+	NODE_ARCH=arm64
 else
 	echo "Unknown arch $ARCH"
 	exit 1
