@@ -1,6 +1,6 @@
 FROM debian:stable-slim AS installer
 
-ARG COZY_VERSION=1.4.12
+ARG COZY_VERSION=1.4.13
 ARG NODE_VERSION=12.18.0
 
 WORKDIR /tmp
