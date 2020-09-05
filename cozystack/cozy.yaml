@@ -128,9 +128,9 @@ mail:
   noreply_address: noreply@localhost
   noreply_name: My Cozy
   # mail smtp host - flags: --mail-host
-  host: smtp.home
+  host: smtp
   # mail smtp port - flags: --mail-port
-  port: 465
+  port: 25
   # mail smtp username - flags: --mail-username
   username: {{.Env.COZY_MAIL_USER}}
   # mail smtp password - flags: --mail-password
