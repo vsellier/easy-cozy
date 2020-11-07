@@ -19,9 +19,9 @@ else
 fi
 
 echo "Install cozy-stack..."
-
-wget -O /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}
-wget -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack.sha256
+# for an obscure reason, in arm/v7, wget didn't recognize the digicert certificate if the ca-certificate path is not specified
+wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}
+wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack.sha256
 
 grep linux-${COZY_ARCH} /tmp/cozy.sha256 > /tmp/SHA256
 
@@ -34,6 +34,6 @@ chmod u+x /tmp/cozy
 
 echo "Install nodejs..."
 
-wget -O /tmp/node.tar.xz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
+wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/node.tar.xz https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-${NODE_ARCH}.tar.xz
 tar -xv --use-compress-program xz -f node.tar.xz
 mv node-v${NODE_VERSION}-linux-${NODE_ARCH} node

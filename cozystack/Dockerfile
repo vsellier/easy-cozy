@@ -5,7 +5,7 @@ ARG NODE_VERSION=14.15.0
 
 WORKDIR /tmp
 
-RUN apt-get update && apt-get -y install wget xz-utils
+RUN apt-get update && apt-get -y install wget xz-utils ca-cacert
 
 COPY install.sh /
 RUN chmod u+x /install.sh
@@ -13,7 +13,7 @@ RUN /install.sh
 
 FROM ubuntu:20.10
 
-RUN apt-get update && apt-get -y install git imagemagick \
+RUN apt-get update && apt-get -y install git imagemagick ca-cacert \
   && rm -rf /var/cache/apt
 RUN groupadd --gid 1000 cozy && useradd --gid 1000 --uid 1000 -m -d /usr/local/cozy-stack cozy \
   && mkdir /etc/cozy && chown cozy:cozy /etc/cozy \
