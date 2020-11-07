@@ -33,8 +33,9 @@ spec:
         tier: db
     spec:
       containers:
-      - image: couchdb:2.2
-      # - image: treehouses/rpi-couchdb:2.0.0
+      - image: couchdb:2.3
+        imagePullPolicy: Always
+      # - image: treehouses/rpi-couchdb:2.3.0
         name: easy-cozy-db
         ports:
         - containerPort: 5984
@@ -61,4 +62,3 @@ spec:
     app: easy-cozy
     tier: db
   type: ClusterIP
-

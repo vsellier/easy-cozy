@@ -2,4 +2,4 @@ version: '3.0'
 
 services:
   db:
-    image: treehouses/rpi-couchdb:2.0.0
+    image: treehouses/rpi-couchdb:2.3.0
