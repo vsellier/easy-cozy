@@ -1,4 +1,4 @@
-FROM debian:stable-slim AS installer
+FROM ubuntu:20.10 AS installer
 
 ARG COZY_VERSION=1.4.17
 ARG NODE_VERSION=12.18.4
@@ -11,7 +11,7 @@ COPY install.sh /
 RUN chmod u+x /install.sh
 RUN /install.sh
 
-FROM debian:stable-slim
+FROM ubuntu:20.10
 
 RUN apt-get update && apt-get -y install git imagemagick \
   && rm -rf /var/cache/apt
