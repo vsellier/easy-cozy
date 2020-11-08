@@ -20,10 +20,11 @@ fi
 
 echo "Install cozy-stack..."
 # for an obscure reason, in arm/v7, wget didn't recognize the digicert certificate if the ca-certificate path is not specified
-wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}
-wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack.sha256
+wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION} https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION}
+wget --ca-certificate=/etc/ssl/certs/ca-certificates.crt -O /tmp/cozy.sha256 https://github.com/cozy/cozy-stack/releases/download/${COZY_VERSION}/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION}.sha256
 
-grep linux-${COZY_ARCH} /tmp/cozy.sha256 > /tmp/SHA256
+awk "{print \"SHA256(/tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION})=\",\$2}" /tmp/cozy.sha256 > /tmp/SHA256
+
 
 echo "Expected checkum                : $(cat /tmp/SHA256)"
 echo "Checksum of the downloaded file : $(sha256sum --tag /tmp/cozy-stack-linux-${COZY_ARCH}-${COZY_VERSION})"
