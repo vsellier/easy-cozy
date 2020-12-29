@@ -8,7 +8,7 @@ IMAGE=vsellier/easy-cozy
 VERSION=latest
 PUSH=false
 PLATFORMS="linux/amd64,linux/arm64,linux/arm/v7"
-BUILDX_OPTIONS="" 
+BUILDX_OPTIONS="--pull --no-cache"
 
 function usage() {
 	echo "$0 [-v <version>] [-p] [-h]"
@@ -49,9 +49,6 @@ fi
 pushd "${SCRIPT_DIR}/../cozystack" || exit
 
 echo "Preparing easy-cozy image version ${COMPLETE_IMAGE_NAME}"
-
-echo "Refreshing base image..."
-docker pull debian:stable-slim
 
 echo "Building the image for the ${PLATFORMS} platforms"
 docker buildx build --platform ${PLATFORMS} -t "${COMPLETE_IMAGE_NAME}" ${BUILDX_OPTIONS} .
