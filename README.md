@@ -42,6 +42,7 @@ DATABASE_DIRECTORY=/var/lib/cozy/db
 STORAGE_DIRECTORY=/var/lib/cozy/storage
 COZY_TLD=cozy.mydomain.tld
 EMAIL=bofh@mydomain.tld
+ACME_DIRECTORY=/var/lib/acme
 ```
 
 - create the data directories and ensure they have the right permissions
