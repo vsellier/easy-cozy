@@ -1,4 +1,4 @@
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: easy-cozy-letsencrypt-staging
@@ -20,8 +20,7 @@ spec:
         ingress:
           class: traefik
 ---
-
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: easy-cozy-letsencrypt
@@ -42,4 +41,3 @@ spec:
       http01:
         ingress:
           class: traefik
-

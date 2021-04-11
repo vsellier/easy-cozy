@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: easy-cozy
@@ -7,34 +7,40 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   tls:
-  - hosts:
-    - my.easy-cozy.domain
-    - drive.my.easy-cozy.domain
-    - banks.my.easy-cozy.domain
-    - blog.my.easy-cozy.domain
-    - collect.my.easy-cozy.domain
-    - contacts.my.easy-cozy.domain
-    - home.my.easy-cozy.domain
-    - notes.my.easy-cozy.domain
-    - oauthcallback.my.easy-cozy.domain
-    - onboarding.my.easy-cozy.domain
-    - passwords.my.easy-cozy.domain
-    - photos.my.easy-cozy.domain
-    - settings.my.easy-cozy.domain
-    - store.my.easy-cozy.domain    
-    secretName: easy-cozy-crt
+    - hosts:
+        - my.easy-cozy.domain
+        - drive.my.easy-cozy.domain
+        - banks.my.easy-cozy.domain
+        - blog.my.easy-cozy.domain
+        - collect.my.easy-cozy.domain
+        - contacts.my.easy-cozy.domain
+        - home.my.easy-cozy.domain
+        - notes.my.easy-cozy.domain
+        - oauthcallback.my.easy-cozy.domain
+        - onboarding.my.easy-cozy.domain
+        - passwords.my.easy-cozy.domain
+        - photos.my.easy-cozy.domain
+        - settings.my.easy-cozy.domain
+        - store.my.easy-cozy.domain
+      secretName: easy-cozy-crt
   rules:
-  - host: my.easy-cozy.domain
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: easy-cozy
-          servicePort: 8080
-  - host: '*.my.easy-cozy.domain'
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: easy-cozy
-          servicePort: 8080
+    - host: my.easy-cozy.domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-cozy
+                port:
+                  number: 8080
+    - host: "*.my.easy-cozy.domain"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: easy-cozy
+                port:
+                  number: 8080
