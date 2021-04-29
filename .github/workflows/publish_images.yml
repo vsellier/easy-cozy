@@ -2,35 +2,66 @@ name: Build docker images
 on:
   push:
     branches:
-      - "docker_latest"
-      - "ghactions"
+      - "latest"
+      - "master"
     tags:
-      - "docker_v*"
+      - "*"
 jobs:
   buildx:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - 
+        name: Checkout
         uses: actions/checkout@v2
-      - name: Set up QEMU
+      - 
+        name: Set up QEMU
         uses: docker/setup-qemu-action@v1
         with:
           platforms: arm,arm64,linux/amd64
-      - name: Set up Docker Buildx
+      - 
+        name: Prepare
+        id: prep
+        run: |
+          DOCKER_IMAGE=vsellier/easy-cozy
+          VERSION=unset
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          elif [[ $GITHUB_REF == refs/heads/* ]]; then
+            VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
+          elif [[ $GITHUB_REF == refs/pull/* ]]; then
+            VERSION=pr-${{ github.event.number }}
+          else
+            echo "Unkown refs $GITHUB_REF"
+            exit 1
+          fi
+          TAGS="${DOCKER_IMAGE}:${VERSION}"
+          echo ::set-output name=version::${VERSION}
+          echo ::set-output name=tags::${TAGS}
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+      - 
+        name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v1
-      - name: Available platforms
+      - 
+        name: Available platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
-      - name: Login To docker hub
+      -
+        name: Login To docker hub
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
-      - name: Build and push
+      -
+        name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: cozystack
           no-cache: true
           pull: true
+          push: true
           platforms: arm,arm64,linux/amd64
-          tags: vsellier/easy-cozy:ghactions
+          tags: ${{ steps.prep.outputs.tags }}
+          labels: |
+            org.opencontainers.image.source=${{ github.event.repository.html_url }}
+            org.opencontainers.image.created=${{ steps.prep.outputs.created }}
+            org.opencontainers.image.revision=${{ github.sha }}          

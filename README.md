@@ -2,6 +2,8 @@
 
 :warning: Unofficial, not affiliated with cozy.io
 
+![github actions status](https://github.com/vsellier/easy-cozy/actions/workflows/publish_images.yml/badge.svg)
+
 Simplified procedure to run a personal cozy cloud with docker.
 
 What is included :
