@@ -4,6 +4,8 @@
 
 ![github actions status](https://github.com/vsellier/easy-cozy/actions/workflows/publish_images.yml/badge.svg)
 
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/vsellier/easy-cozy/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/vsellier/easy-cozy)
+
 Simplified procedure to run a personal cozy cloud with docker.
 
 What is included :
