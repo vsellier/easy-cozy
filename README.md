@@ -41,6 +41,10 @@ git clone https://github.com/vsellier/easy-cozy.git
 
 - On the root directory of the project, create a `.env` file. You can use the `env-template` file as reference.
 
+:warning: It's recommended to create the data directories in a neutral location like
+`/srv` or `/var/lib`. If they are created in a `/home/<user>` directory for example, there is a good chance you will
+face to permission issues due to the home dir permission restrictions.
+
 ```
 DATABASE_DIRECTORY=/var/lib/cozy/db
 STORAGE_DIRECTORY=/var/lib/cozy/storage
