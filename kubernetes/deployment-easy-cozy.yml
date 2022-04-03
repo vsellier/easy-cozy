@@ -35,7 +35,7 @@ spec:
         tier: file
     spec:
       containers:
-      - image: vsellier/easy-cozy:1.5.3
+      - image: vsellier/easy-cozy:1.5.4
         name: easy-cozy
         ports:
         - containerPort: 8080
