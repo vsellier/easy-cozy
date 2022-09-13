@@ -1,4 +1,4 @@
-FROM ubuntu:21.10 AS installer
+FROM ubuntu:22.10 AS installer
 
 ARG COZY_VERSION=1.5.7
 ARG NODE_VERSION=16.17.0
@@ -11,7 +11,7 @@ COPY install.sh /
 RUN chmod u+x /install.sh
 RUN /install.sh
 
-FROM ubuntu:21.10
+FROM ubuntu:22.10
 
 RUN apt-get update && apt-get upgrade -y && apt-get -y install git imagemagick ca-cacert libatomic1 \
   && rm -rf /var/cache/apt
