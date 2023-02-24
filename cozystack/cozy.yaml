@@ -254,3 +254,8 @@ contexts:
     # konnectors slugs to exclude from cozy-collect
     exclude_konnectors:
         - a_konnector_slug
+registries:
+  default:
+  - https://apps-registry.cozycloud.cc/selfhosted
+  - https://apps-registry.cozycloud.cc/banks
+  - https://apps-registry.cozycloud.cc/
