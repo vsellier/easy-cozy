@@ -118,7 +118,7 @@ jobs:
 
 # konnectors execution parameters for executing external processes.
 konnectors:
-  cmd: ./scripts/konnector-node-run.sh # run connectors with node
+  cmd: /usr/local/cozy-stack/scripts/konnector-node-run.sh # run connectors with node
   # cmd: ./scripts/konnector-rkt-run.sh # run connectors with rkt
   # cmd: ./scripts/konnector-nsjail-run.sh # run connectors with nsjail
 
